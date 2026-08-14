@@ -1,0 +1,38 @@
+name: Upload dataset to Hugging Face
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/raw/**'
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install huggingface_hub
+        run: pip install huggingface_hub
+
+      - name: Upload new/changed files to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python scripts/upload_to_hf.py
+
+      - name: Remove raw files from repo after successful upload
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git rm -r --ignore-unmatch data/raw/*
+          git commit -m "Remove raw data after upload to Hugging Face [skip ci]" || echo "Nada para remover"
+          git push
