@@ -2,7 +2,7 @@ name: Upload dataset to Hugging Face
 
 on:
   push:
-    branches: [main]
+    branches-ignore: [main]
     paths:
       - 'data/raw/**'
 
