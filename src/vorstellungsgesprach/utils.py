@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from typing import Any
+import re
 
 from lingua import Language, LanguageDetectorBuilder
 
@@ -75,3 +76,41 @@ def add_language_metadata(
         enriched_jobs.append(enriched_job)
 
     return enriched_jobs
+
+
+def normalize_text(text: str | None) -> str:
+    """Normalize text for duplicate comparison."""
+    if not text:
+        return ""
+
+    return re.sub(r"\s+", " ", text).strip().casefold()
+
+def regex_text(text: str | None) -> str:
+    """Remove gender markers such as (m/w/d), (all genders), (gn), m/w/d"""
+    if not text:
+        return ""
+
+    return re.sub(r"\s*(?:\(\s*(?:[a-z]/[a-z]/[a-z]|all genders?|gn)\s*\)|[a-z]/[a-z]/[a-z]|[0-9]{4})\s*", " ", text, flags=re.IGNORECASE).strip()
+
+def remove_duplicate_jobs(
+    jobs: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Remove jobs with the same company and description."""
+    unique_jobs = []
+    seen = set()
+
+    for job in jobs:
+        job["company"] = normalize_text(job.get("company"))
+        job["description"] = normalize_text(job.get("description"))
+        job["title"] = normalize_text(job.get("title"))
+        job["title"] = regex_text(job.get("title"))
+        # Create a unique key that ignores ID, title, and city.
+        duplicate_key = (job["company"], job["description"])
+
+        if not job["description"] or duplicate_key in seen:
+            continue
+
+        seen.add(duplicate_key)
+        unique_jobs.append(job)
+
+    return unique_jobs
