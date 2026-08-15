@@ -1,0 +1,198 @@
+import sys
+from pathlib import Path
+print(Path.cwd())
+import chromadb
+from vorstellungsgesprach.utils import load_data, add_language_metadata,remove_duplicate_jobs
+from vorstellungsgesprach import conf
+from vorstellungsgesprach import embeddings
+from vorstellungsgesprach import evaluation
+from vorstellungsgesprach import conf, rag
+from vorstellungsgesprach.models import list_available_chat_models
+get_ipython().run_line_magic('cd', '/Users/eli/vorstellungsgesprach')
+from dotenv import load_dotenv
+from google import genai
+import os
+
+
+
+#defining API key for GenAI
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
+#load jobs
+jobs = load_data("data/raw/job.json")
+jobs = [
+    {
+        "id": job["id"],
+        "description": job.get("description", ""),
+        "title": job.get("title", ""),
+        "company": job.get("companyName", "")
+    }
+    for job in jobs
+]
+print(len(jobs))
+# add language metadata
+jobs_with_language = add_language_metadata(jobs)
+#filter only german jobs
+german_jobs = [
+    job
+    for job in jobs_with_language
+    if job["detected_language"] == "german"
+    and job["language_confidence"] >= 0.80
+]
+#remove_duplicate_jobs(german_jobs)
+unique_jobs = remove_duplicate_jobs(german_jobs)
+def chunk_description(text: str, max_chars: int = 4000, overlap: int = 200) -> list[str]:
+    """Quebra a descrição em pedaços se for muito longa; senão, retorna como está."""
+    if len(text) <= max_chars:
+        return [text]
+
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = start + max_chars
+        chunks.append(text[start:end])
+        start = end - overlap  # overlap evita cortar contexto no meio de uma frase importante
+
+    return chunks
+
+
+def build_documents(jobs: list[dict]) -> list[dict]:
+    """Transforma cada vaga em um ou mais documentos, dependendo do tamanho."""
+    documents = []
+    for job in jobs:
+        description_chunks = chunk_description(job["description"])
+
+        for i, chunk in enumerate(description_chunks):
+            text = f"Titel: {job['title']}\nUnternehmen: {job['company']}\n\n{chunk}"
+            documents.append({
+                "id": f"{job['id']}_chunk{i}" if len(description_chunks) > 1 else job["id"],
+                "text": text,
+                "metadata": {
+                    "job_id": job["id"],
+                    "title": job["title"],
+                    "company": job["company"],
+                    "chunk_index": i,
+                    "total_chunks": len(description_chunks),
+                },
+            })
+    return documents
+
+
+documents = build_documents(unique_jobs)
+print(f"Total de vagas: {len(unique_jobs)}")
+print(f"Total de documentos (após chunking): {len(documents)}")
+#create documents for embedding
+texts = [doc["text"] for doc in documents]
+vectors = embeddings.embed_texts(texts)
+
+print(f"Embeddings gerados: {len(vectors)}")
+print(f"Dimensão de cada vetor: {len(vectors[0])}")
+client = chromadb.PersistentClient(path="./chroma_db")
+collection = client.get_or_create_collection(name="vagas_ti")
+
+collection.add(
+    ids=[doc["id"] for doc in documents],
+    embeddings=vectors,
+    documents=[doc["text"] for doc in documents],
+    metadatas=[doc["metadata"] for doc in documents],
+)
+
+print(f"Documentos indexados: {collection.count()}")
+#check models available
+CHROMA_PATH = "./chroma_db"
+COLLECTION_NAME = "vagas_ti"
+
+
+chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+collection = chroma_client.get_collection(name=COLLECTION_NAME)
+
+question = "Welche Stellen erfordern Erfahrung mit Python?"
+
+gemini_client = genai.Client(api_key=conf.GEMINI_API_KEY)
+available_models = list_available_chat_models(gemini_client)
+
+results = []
+
+for model_name in available_models:
+    try:
+        result = rag.answer(
+            collection=collection,
+            query=question,
+            model=model_name,
+            n_results=20,
+        )
+
+        results.append(result)
+
+        print(f"\n{'=' * 80}")
+        print(f"Modelo: {result['model']}")
+        print(f"{'=' * 80}")
+        print(result["answer"])
+
+    except Exception:
+        continue
+
+if results:
+    print("\nFontes recuperadas:")
+
+    for index, source in enumerate(results[0]["sources"], start=1):
+        metadata = source["metadata"]
+
+        print(
+            f"{index}. {metadata.get('title', 'Sem título')} "
+            f"@ {metadata.get('company', 'Sem empresa')} "
+            f"(distância: {source['distance']:.3f})"
+        )
+else:
+    print("Nenhum modelo produziu uma resposta.")
+judge_model = available_models[0]
+judged_results = []
+
+for result in results:
+    context = "\n\n".join(
+        source["text"]
+        for source in result["sources"]
+    )
+
+    try:
+        scores = evaluation.judge_answer(
+            query=result["query"],
+            answer=result["answer"],
+            context=context,
+            judge_model=judge_model,
+        )
+
+        judged_results.append(
+            {
+                **result,
+                **scores,
+            }
+        )
+
+    except Exception:
+        continue
+
+
+best = sorted(
+    judged_results,
+    key=lambda result: result["overall"] or 0,
+    reverse=True,
+)
+
+
+for result in best:
+    print(
+        f"{result['model']} | "
+        f"faithfulness={result['faithfulness']} | "
+        f"helpfulness={result['helpfulness']} | "
+        f"overall={result['overall']}"
+    )
+
+
+winner = best[0]
+
+print(
+    f"\nMelhor modelo: {winner['model']} "
+    f"(nota: {winner['overall']})"
+)

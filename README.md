@@ -11,6 +11,7 @@ git log --oneline -3
 
 uv add python-frontmatter python-dotenv 
 uv add lingua-language-detector
+uv add gitsource requests minisearch python-frontmatter python-dotenv google-genai chromadb onnxruntime tokenizers huggingface_hub
 
 python3 -m json.tool job.json > /dev/null && echo "JSON válido" || echo "JSON com problema"
 python3 -c "import json; print(len(json.load(open('data/raw/job.json'))))"
