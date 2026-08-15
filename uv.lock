@@ -3354,12 +3354,15 @@ dependencies = [
     { name = "gitsource" },
     { name = "google-genai" },
     { name = "hf" },
+    { name = "huggingface-hub" },
     { name = "lingua-language-detector" },
     { name = "load-dotenv" },
     { name = "minisearch" },
+    { name = "onnxruntime" },
     { name = "python-dotenv" },
     { name = "python-frontmatter" },
     { name = "requests" },
+    { name = "tokenizers" },
 ]
 
 [package.dev-dependencies]
@@ -3373,12 +3376,15 @@ requires-dist = [
     { name = "gitsource", specifier = ">=0.0.5" },
     { name = "google-genai", specifier = ">=2.18.1" },
     { name = "hf", specifier = ">=1.27.0" },
+    { name = "huggingface-hub", specifier = ">=1.27.0" },
     { name = "lingua-language-detector", specifier = ">=2.2.0" },
     { name = "load-dotenv", specifier = ">=0.1.0" },
     { name = "minisearch", specifier = ">=1.0.1" },
+    { name = "onnxruntime", specifier = ">=1.28.0" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "python-frontmatter", specifier = ">=1.3.0" },
     { name = "requests", specifier = ">=2.34.2" },
+    { name = "tokenizers", specifier = ">=0.23.1" },
 ]
 
 [package.metadata.requires-dev]
