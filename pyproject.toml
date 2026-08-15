@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "chromadb>=1.5.9",
     "gitsource>=0.0.5",
     "google-genai>=2.18.1",
     "hf>=1.27.0",
