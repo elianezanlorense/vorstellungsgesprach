@@ -2,3 +2,6 @@
 *.json
 .env
 models
+*.db
+*.db-shm
+*.db-wal
