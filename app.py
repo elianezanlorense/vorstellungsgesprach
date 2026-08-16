@@ -5,19 +5,21 @@ from __future__ import annotations
 import chromadb
 import streamlit as st
 
-from vorstellungsgesprach import rag
+from vorstellungsgesprach import db, rag
 
 
 CHROMA_PATH = "./chroma_db"
 COLLECTION_NAME = "vagas_ti"
-MODEL_NAME = "models/gemma-4-26b-a4b-it"
-N_RESULTS = 20
+MODEL_NAME = "models/gemini-flash-lite-latest"
+N_RESULTS = 4
 
 
 st.set_page_config(
     page_title="Vorstellungsgesprach Assistent",
     page_icon="💼",
 )
+
+db.init_db()
 
 
 @st.cache_resource
@@ -45,25 +47,42 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 
+def render_answer(entry: dict) -> None:
+    st.write(entry["answer"])
+
+    with st.expander("Quellen"):
+        for source in entry["sources"]:
+            metadata = source["metadata"]
+
+            st.markdown(
+                f"**{metadata['title']}** "
+                f"@ {metadata['company']}"
+            )
+
+            st.caption(
+                source["text"][:300] + "..."
+            )
+
+    interaction_id = entry["interaction_id"]
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("👍", key=f"up_{interaction_id}"):
+            db.set_feedback(interaction_id, "up")
+            st.toast("Danke für dein Feedback!")
+
+    with col2:
+        if st.button("👎", key=f"down_{interaction_id}"):
+            db.set_feedback(interaction_id, "down")
+            st.toast("Danke für dein Feedback!")
+
+
 for entry in st.session_state.history:
     with st.chat_message("user"):
         st.write(entry["query"])
 
     with st.chat_message("assistant"):
-        st.write(entry["answer"])
-
-        with st.expander("Quellen"):
-            for source in entry["sources"]:
-                metadata = source["metadata"]
-
-                st.markdown(
-                    f"**{metadata['title']}** "
-                    f"@ {metadata['company']}"
-                )
-
-                st.caption(
-                    source["text"][:300] + "..."
-                )
+        render_answer(entry)
 
 
 query = st.chat_input(
@@ -77,40 +96,31 @@ if query:
 
     with st.chat_message("assistant"):
         with st.spinner("Suche in Stellenanzeigen..."):
-            result = rag.answer(
-                collection=collection,
-                query=query,
-                model=MODEL_NAME,
-                n_results=N_RESULTS,
-            )
-
-        st.write(result["answer"])
-
-        with st.expander("Quellen"):
-            for source in result["sources"]:
-                metadata = source["metadata"]
-
-                st.markdown(
-                    f"**{metadata['title']}** "
-                    f"@ {metadata['company']}"
+            try:
+                result = rag.answer(
+                    collection=collection,
+                    query=query,
+                    model=MODEL_NAME,
+                    n_results=N_RESULTS,
                 )
-
-                st.caption(
-                    source["text"][:300] + "..."
+            except Exception:
+                st.error(
+                    "Die Anfrage-Quota wurde überschritten. Bitte warte "
+                    "kurz und versuche es erneut."
                 )
+                st.stop()
 
-        col1, col2 = st.columns(2)
+        interaction_id = db.log_interaction(
+            query=result["query"],
+            answer=result["answer"],
+            model=result.get("model"),
+            sources=[
+                {"title": s["metadata"]["title"], "company": s["metadata"]["company"]}
+                for s in result["sources"]
+            ],
+        )
+        result["interaction_id"] = interaction_id
 
-        with col1:
-            st.button(
-                "👍",
-                key=f"up_{len(st.session_state.history)}",
-            )
-
-        with col2:
-            st.button(
-                "👎",
-                key=f"down_{len(st.session_state.history)}",
-            )
+        render_answer(result)
 
     st.session_state.history.append(result)

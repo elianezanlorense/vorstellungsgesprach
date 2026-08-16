@@ -4,4 +4,5 @@
 models
 *.db
 *.db-shm
-*.db-wal
+*.db-wal*.db
+*.db
