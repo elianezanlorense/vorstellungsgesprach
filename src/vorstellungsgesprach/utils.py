@@ -101,11 +101,11 @@ def remove_duplicate_jobs(
 
     for job in jobs:
         job["company"] = normalize_text(job.get("company"))
-        job["description"] = normalize_text(job.get("description"))
+        job["description_lower"] = normalize_text(job.get("description"))
         job["title"] = normalize_text(job.get("title"))
         job["title"] = regex_text(job.get("title"))
         # Create a unique key that ignores ID, title, and city.
-        duplicate_key = (job["company"], job["description"])
+        duplicate_key = (job["company"], job["description_lower"])
 
         if not job["description"] or duplicate_key in seen:
             continue

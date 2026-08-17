@@ -6,3 +6,5 @@ models
 *.db-shm
 *.db-wal*.db
 *.db
+ml_questions.md
+*.txt
