@@ -18,10 +18,8 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation import evaluation_queries
-from src.evaluation import evaluate_retrieval
-from src.evaluation import hit_rate
-from src.evaluation import mean_reciprocal_rank
+from src.evaluation import evaluate_retrieval, hit_rate, mean_reciprocal_rank
+from src.evaluation_queries import evaluation_queries
 
 CHROMA_PATH = "../data/processed/chroma_db"
 COLLECTION_NAME = "concepts_de"
