@@ -3,7 +3,7 @@ models/gemma-4-26b-a4b-it,54,4,50,0.0741,1.0,5.0,5.0,5.0,5.0,5.0,0.3704,14.3742
 models/gemini-flash-latest,54,0,54,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 models/gemini-flash-lite-latest,54,0,54,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 models/gemini-3-flash-preview,54,0,54,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-models/gemini-3.1-flash-lite-preview,11,0,11,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+models/gemini-3.1-flash-lite-preview,24,0,24,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 models/gemini-3.1-flash-lite,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 models/gemini-3.5-flash,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 models/gemini-3.5-flash-lite,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0

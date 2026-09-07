@@ -1,5 +1,4 @@
 .venv
-*.json
 .env
 models
 *.db
@@ -9,3 +8,4 @@ models
 ml_questions.md
 *.txt
 app2.py
+main-Copy.py
