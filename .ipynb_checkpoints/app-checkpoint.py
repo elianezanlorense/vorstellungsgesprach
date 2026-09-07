@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import os
+import sys
+from pathlib import Path
 
 import chromadb
 import streamlit as st
@@ -10,16 +12,23 @@ from dotenv import load_dotenv
 from google import genai
 from sentence_transformers import SentenceTransformer
 
-from src.load_store_data import load_data
-from src.rag import TechnicalGermanRAG
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+SRC_DIR = PROJECT_ROOT / "src"
+
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from load_data import load_data
+from rag import TechnicalGermanRAG
 
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 
-TOPICS_PATH = "data/raw/topics.json"
-CHROMA_PATH = "data/processed/chroma_db"
+TOPICS_PATH = "../data/raw/topics.json"
+CHROMA_PATH = "../data/processed/chroma_db"
 
 COLLECTION_NAME = "concepts_de"
 EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
@@ -52,7 +61,7 @@ st.set_page_config(
     layout="centered",
 )
 
-load_dotenv()
+load_dotenv(PROJECT_ROOT / ".env")
 
 
 # ---------------------------------------------------------------------------
@@ -66,10 +75,10 @@ def create_rag_assistant() -> TechnicalGermanRAG:
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY was not found in the environment.")
 
-    if not os.path.isfile(TOPICS_PATH):
+    if not TOPICS_PATH.is_file():
         raise FileNotFoundError(f"Topics file not found: {TOPICS_PATH}")
 
-    if not os.path.isdir(CHROMA_PATH):
+    if not CHROMA_PATH.is_dir():
         raise FileNotFoundError(
             f"ChromaDB directory not found: {CHROMA_PATH}. "
             "Run 'python main.py ingest' first."
