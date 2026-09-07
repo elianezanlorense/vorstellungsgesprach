@@ -1,0 +1,315 @@
+from pathlib import Path
+from typing import Any
+
+
+evaluation_queries = [
+    # q001 - Imbalanced Data
+    {
+        "query": "Was bedeutet es, wenn eine Zielklasse viel seltener vorkommt als die andere?",
+        "expected_id": "q001",
+    },
+    {
+        "query": "Welches Problem entsteht bei einer sehr kleinen positiven Klasse?",
+        "expected_id": "q001",
+    },
+    {
+        "query": "Wie nennt man eine ungleichmäßige Verteilung der Zielklassen?",
+        "expected_id": "q001",
+    },
+
+    # q002 - Konfusionsmatrix
+    {
+        "query": "Wie lassen sich richtige und falsche Klassifikationen darstellen?",
+        "expected_id": "q002",
+    },
+    {
+        "query": "Was bedeuten True Positives und False Negatives?",
+        "expected_id": "q002",
+    },
+    {
+        "query": "Welche Tabelle enthält TP, TN, FP und FN?",
+        "expected_id": "q002",
+    },
+
+    # q003 - Clusteranalyse
+    {
+        "query": "Wie können ähnliche Kunden automatisch gruppiert werden?",
+        "expected_id": "q003",
+    },
+    {
+        "query": "Bei welchem Verfahren sollen Gruppen intern homogen sein?",
+        "expected_id": "q003",
+    },
+    {
+        "query": "Welches Verfahren gehört zum Unsupervised Learning und erzeugt Gruppen?",
+        "expected_id": "q003",
+    },
+
+    # q004 - Cross-Validation
+    {
+        "query": "Wie kann die Robustheit eines Modells auf kleinen Datensätzen getestet werden?",
+        "expected_id": "q004",
+    },
+    {
+        "query": "Welches Verfahren hilft bei der Erkennung von Overfitting?",
+        "expected_id": "q004",
+    },
+    {
+        "query": "Wie kann ein Datensatz mehrfach in Trainings- und Validierungsteile aufgeteilt werden?",
+        "expected_id": "q004",
+    },
+
+    # q005 - Hazard Ratio
+    {
+        "query": "Wie vergleicht man Ereignisraten zweier Gruppen über die Zeit?",
+        "expected_id": "q005",
+    },
+    {
+        "query": "Was bedeutet ein Wert kleiner als 1 beim Vergleich von Behandlungs- und Kontrollgruppe?",
+        "expected_id": "q005",
+    },
+    {
+        "query": "Welches Maß berücksichtigt auch den Zeitpunkt eines Ereignisses, nicht nur ob es eintritt?",
+        "expected_id": "q005",
+    },
+
+    # q006 - Relatives Risiko
+    {
+        "query": "Wie berechnet man das Verhältnis von Risiken zwischen zwei Gruppen?",
+        "expected_id": "q006",
+    },
+    {
+        "query": "Was bedeutet es, wenn das Risiko in einer Gruppe relativ um 23 Prozent niedriger ist?",
+        "expected_id": "q006",
+    },
+    {
+        "query": "Welches Maß teilt das Risiko der Behandlungsgruppe durch das Risiko der Kontrollgruppe?",
+        "expected_id": "q006",
+    },
+
+    # q007 - Odds Ratio
+    {
+        "query": "Wie vergleicht man die Chancen eines Ereignisses zwischen zwei Gruppen?",
+        "expected_id": "q007",
+    },
+    {
+        "query": "Was ist der Unterschied zwischen Odds Ratio und relativem Risiko?",
+        "expected_id": "q007",
+    },
+    {
+        "query": "Wie werden Personen mit und ohne Ereignis in einem Chancenverhältnis verwendet?",
+        "expected_id": "q007",
+    },
+
+    # q008 - Ereigniszeitanalyse
+    {
+        "query": "Welche Analyse untersucht sowohl ob als auch wann ein Ereignis eintritt?",
+        "expected_id": "q008",
+    },
+    {
+        "query": "Wie vergleicht man Überlebensverteilungen zwischen mehreren Gruppen?",
+        "expected_id": "q008",
+    },
+    {
+        "query": "Was passiert mit Personen, bei denen ein Ereignis nicht beobachtet wurde?",
+        "expected_id": "q008",
+    },
+
+    # q009 - Feature Engineering
+    {
+        "query": "Was versteht man unter der Auswahl und Erzeugung neuer Merkmale?",
+        "expected_id": "q009",
+    },
+    {
+        "query": "Welcher Teilprozess des Data Minings umfasst Feature Selection und Feature Extraction?",
+        "expected_id": "q009",
+    },
+    {
+        "query": "Wie werden vorhandene Merkmale nach Relevanz bewertet?",
+        "expected_id": "q009",
+    },
+
+    # q010 - Pearson-Korrelation
+    {
+        "query": "Welches Maß beschreibt den linearen Zusammenhang zwischen zwei Variablen?",
+        "expected_id": "q010",
+    },
+    {
+        "query": "Zwischen welchen Werten liegt der Pearson-Korrelationskoeffizient?",
+        "expected_id": "q010",
+    },
+    {
+        "query": "Wie misst man Stärke und Richtung eines linearen Zusammenhangs?",
+        "expected_id": "q010",
+    },
+
+    # q011 - Spearman-Korrelation
+    {
+        "query": "Welches Korrelationsmaß eignet sich für monotone, nicht lineare Zusammenhänge?",
+        "expected_id": "q011",
+    },
+    {
+        "query": "Wie funktioniert eine Korrelation, die auf Rangwerten basiert?",
+        "expected_id": "q011",
+    },
+    {
+        "query": "Welches nichtparametrische Verfahren misst einen monotonen Zusammenhang?",
+        "expected_id": "q011",
+    },
+
+    # q012 - MinMaxScaler
+    {
+        "query": "Wie skaliert man Merkmale auf einen Bereich zwischen null und eins?",
+        "expected_id": "q012",
+    },
+    {
+        "query": "Welcher Scaler wird durch Ausreißer stark beeinflusst?",
+        "expected_id": "q012",
+    },
+    {
+        "query": "Wie berechnet man einen Wert, indem man das Minimum abzieht und durch die Spannweite teilt?",
+        "expected_id": "q012",
+    },
+
+    # q013 - StandardScaler
+    {
+        "query": "Wie standardisiert man ein Merkmal mit Mittelwert und Standardabweichung?",
+        "expected_id": "q013",
+    },
+    {
+        "query": "Welcher Scaler führt zu einem Mittelwert von null und einer Varianz von eins?",
+        "expected_id": "q013",
+    },
+    {
+        "query": "Welches Verfahren ist empfindlich gegenüber Ausreißern, da es Mittelwert und Standardabweichung nutzt?",
+        "expected_id": "q013",
+    },
+
+    # q014 - RobustScaler
+    {
+        "query": "Welcher Scaler verwendet Median und Interquartilsabstand statt Mittelwert?",
+        "expected_id": "q014",
+    },
+    {
+        "query": "Wie skaliert man Daten, ohne dass Ausreißer stark ins Gewicht fallen?",
+        "expected_id": "q014",
+    },
+    {
+        "query": "Welches Verfahren eignet sich, wenn Ausreißer nicht entfernt werden sollen?",
+        "expected_id": "q014",
+    },
+
+    # q015 - Aufteilung von Entscheidungsbäumen
+    {
+        "query": "Wie wählt ein Entscheidungsbaum eine Aufteilung aus?",
+        "expected_id": "q015",
+    },
+    {
+        "query": "Was ist der Unterschied zwischen Gini-Kriterium und Entropie-Kriterium?",
+        "expected_id": "q015",
+    },
+    {
+        "query": "Welches Maß beschreibt die Homogenität der Zielwerte in einem Knoten?",
+        "expected_id": "q015",
+    },
+
+    # q016 - KNNImputer
+    {
+        "query": "Wie werden fehlende Werte mithilfe der nächsten Nachbarn ergänzt?",
+        "expected_id": "q016",
+    },
+    {
+        "query": "Welches Verfahren nutzt ähnliche Beobachtungen, um fehlende Werte zu ersetzen?",
+        "expected_id": "q016",
+    },
+    {
+        "query": "Wie berechnet man einen fehlenden Wert aus dem Mittelwert der Nachbarn?",
+        "expected_id": "q016",
+    },
+
+    # q017 - R²-Score
+    {
+        "query": "Welche Metrik bewertet die Vorhersagequalität eines Regressionsmodells?",
+        "expected_id": "q017",
+    },
+    {
+        "query": "Was bedeutet ein negativer Wert beim Bestimmtheitsmaß?",
+        "expected_id": "q017",
+    },
+    {
+        "query": "Wie vergleicht man ein Modell mit einer einfachen Mittelwertvorhersage?",
+        "expected_id": "q017",
+    },
+
+    # q018 - F1-Score
+    {
+        "query": "Welche Metrik kombiniert Precision und Recall zu einem harmonischen Mittel?",
+        "expected_id": "q018",
+    },
+    {
+        "query": "Wie bewertet man ein Klassifikationsmodell unter Berücksichtigung von False Positives und False Negatives?",
+        "expected_id": "q018",
+    },
+    {
+        "query": "Welcher Score liegt zwischen 0,0 und 1,0 und benötigt hohe Precision und hohen Recall?",
+        "expected_id": "q018",
+    },
+]
+
+
+def evaluate_retrieval(
+    evaluation_queries: list[dict[str, str]],
+    model: Any,
+    collection: Any,
+    output_path: str | Path,
+    n_results: int = 3,
+) -> list[dict]:
+    """Run retrieval queries and save the results to a text file."""
+    retrieval_results = []
+    result_limit = min(n_results, collection.count())
+    for item in evaluation_queries:
+        query_vector = model.encode(
+            item["query"],
+            normalize_embeddings=True,
+        )
+        search_results = collection.query(
+            query_embeddings=[query_vector.tolist()],
+            n_results=result_limit,
+        )
+        retrieved_ids = search_results["ids"][0]
+        retrieval_results.append({
+            "query": item["query"],
+            "expected_id": item["expected_id"],
+            "retrieved_ids": retrieved_ids,
+        })
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as file:
+        for result in retrieval_results:
+            file.write(f"Query: {result['query']}\n")
+            file.write(f"Expected: {result['expected_id']}\n")
+            file.write(f"Retrieved: {result['retrieved_ids']}\n")
+            file.write("\n")
+    return retrieval_results
+
+
+def hit_rate(results: list[dict], k: int) -> float:
+    hits = []
+    for result in results:
+        top_k = result["retrieved_ids"][:k]
+        hit = result["expected_id"] in top_k
+        hits.append(hit)
+    return sum(hits) / len(hits)
+
+
+def mean_reciprocal_rank(results: list[dict]) -> float:
+    reciprocal_ranks = []
+    for result in results:
+        retrieved_ids = result["retrieved_ids"]
+        expected_id = result["expected_id"]
+        if expected_id in retrieved_ids:
+            rank = retrieved_ids.index(expected_id) + 1
+            reciprocal_ranks.append(1 / rank)
+        else:
+            reciprocal_ranks.append(0)
+    return sum(reciprocal_ranks) / len(reciprocal_ranks)
