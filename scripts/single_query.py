@@ -16,13 +16,11 @@ from dotenv import load_dotenv
 from google import genai
 from sentence_transformers import SentenceTransformer
 
-
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
-
 
 from src.evaluation import evaluation_queries
 from src.load_store_data import load_data
@@ -35,12 +33,11 @@ CHROMA_PATH = "../data/processed/chroma_db"
 OUTPUT_PATH = "../outputs/query_random.txt"
 
 COLLECTION_NAME = "concepts_de"
-
-EMBEDDING_MODEL = ( "sentence-transformers/" "paraphrase-multilingual-MiniLM-L12-v2"
+EMBEDDING_MODEL = (
+    "sentence-transformers/"
+    "paraphrase-multilingual-MiniLM-L12-v2"
 )
-
 GENERATION_MODEL = "models/gemini-flash-lite-latest"
-
 
 ANSWER_PROMPT = """
 Du hilfst einer Person dabei, technisches Deutsch zu lernen.
@@ -64,50 +61,35 @@ Antworte ausschließlich mit einem gültigen JSON-Objekt:
 
 
 def main() -> None:
-   
-    topics_path = (SCRIPT_DIR / TOPICS_PATH ).resolve()
-
-    chroma_path = (SCRIPT_DIR / CHROMA_PATH ).resolve()
-
+    topics_path = (SCRIPT_DIR / TOPICS_PATH).resolve()
+    chroma_path = (SCRIPT_DIR / CHROMA_PATH).resolve()
     output_path = (SCRIPT_DIR / OUTPUT_PATH).resolve()
-
-    env_path = (  SCRIPT_DIR / "../.env").resolve()
+    env_path = (SCRIPT_DIR / "../.env").resolve()
 
     load_dotenv(env_path)
-
-    api_key = os.getenv( "GEMINI_API_KEY" )
+    api_key = os.getenv("GEMINI_API_KEY")
 
     if not api_key:
-        raise RuntimeError(
-            f"GEMINI_API_KEY was not found in {env_path}"
-        )
+        raise RuntimeError(f"GEMINI_API_KEY was not found in {env_path}")
 
     if not topics_path.is_file():
-        raise RuntimeError(
-            f"Topics file not found: {topics_path}"
-        )
+        raise RuntimeError(f"Topics file not found: {topics_path}")
 
     if not chroma_path.is_dir():
-        raise RuntimeError(
-            f"ChromaDB directory not found: {chroma_path}"
-        )
+        raise RuntimeError(f"ChromaDB directory not found: {chroma_path}")
 
-    output_path.parent.mkdir( parents=True, exist_ok=True, )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     topics = load_data(topics_path)
 
     chroma_client = chromadb.PersistentClient(path=str(chroma_path))
+    collection = chroma_client.get_collection(name=COLLECTION_NAME)
 
-    collection = chroma_client.get_collection( name=COLLECTION_NAME )
+    if collection.count() == 0:
+        raise RuntimeError(f"Collection '{COLLECTION_NAME}' is empty.")
 
-    if collection.count() == 0: raise RuntimeError(
-            f"Collection '{COLLECTION_NAME}' is empty."
-        )
-
-    gemini_client = genai.Client(
-        api_key=api_key)
-
-    embedding_model = SentenceTransformer( EMBEDDING_MODEL )
+    gemini_client = genai.Client(api_key=api_key)
+    embedding_model = SentenceTransformer(EMBEDDING_MODEL)
 
     rag = TechnicalGermanRAG(
         collection=collection,
@@ -118,12 +100,11 @@ def main() -> None:
         answer_prompt=ANSWER_PROMPT,
     )
 
-    selected_query = random.choice( evaluation_queries)
-
-    available_models = ( list_available_chat_models( gemini_client))
+    selected_query = random.choice(evaluation_queries)
+    available_models = list_available_chat_models(gemini_client)
 
     query_random = rag.compare_models(
-        evaluation_queries=[ selected_query ],
+        evaluation_queries=[selected_query],
         candidate_models=available_models,
     )
 
@@ -134,18 +115,13 @@ def main() -> None:
             file.write(f"Thema erkannt: {result['topic']}\n")
             file.write(f"Intro: {result['intro']}\n")
             file.write("Phrasen:\n")
-
-        for phrase in result["phrases"]:
-            file.write(f"  • {phrase}\n")
-
-        file.write("-" * 80 + "\n")
-  
+            for phrase in result["phrases"]:
+                file.write(f"  • {phrase}\n")
+            file.write("-" * 80 + "\n")
 
     print(f"Selected query: {selected_query['query']}")
-
-    print( f"Expected ID: "  f"{selected_query['expected_id']}"  )
-
-    print( f"Results saved to: {output_path}" )
+    print(f"Expected ID: {selected_query['expected_id']}")
+    print(f"Results saved to: {output_path}")
 
 
 if __name__ == "__main__":
