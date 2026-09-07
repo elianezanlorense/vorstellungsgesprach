@@ -1,17 +1,22 @@
+# Ambiente
 .venv
 .env
+
+# Modelos e bancos locais (não precisa no deploy)
 models
 *.db
 *.db-shm
-*.db-wal*.db
-*.db
-ml_questions.md
+*.db-wal
+
+# Cache Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+
+# Diversos
 *.txt
+ml_questions.md
+
+# Arquivos específicos a ignorar
 app2.py
 main-Copy.py
-.ipynb_checkpointsapp2.py
-main-Copy.py
-.ipynb_checkpoints/
 main-Copy1.py
-main-Copy.py
-.ipynb_checkpoints/

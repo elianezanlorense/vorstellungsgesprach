@@ -12,6 +12,8 @@ This project addresses that gap. Instead of asking an LLM to answer from general
 
 ## Demo
 
+Try it live: [vorstellungsgesprach.streamlit.app](https://vorstellungsgesprach.streamlit.app)
+
 Example interaction:
 
 ```text
@@ -216,7 +218,7 @@ The Gemini quota has been reached. Wait for it to reset, reduce the models or qu
 
 The labeled retrieval and LLM evaluation scripts test application quality. A conventional automated unit-test suite is not currently documented.
 
-Persistent feedback, operational metrics, and a monitoring dashboard are not implemented. The application is currently intended for local demonstration.
+Persistent feedback, operational metrics, and a monitoring dashboard are not implemented. The application is currently intended for local demonstration, alongside the public Streamlit deployment.
 
 ## Limitations
 
@@ -225,7 +227,7 @@ Persistent feedback, operational metrics, and a monitoring dashboard are not imp
 - The full LLM evaluation is blocked by free-tier quotas.
 - Out-of-scope questions may retrieve an unrelated nearest concept.
 - No confidence threshold, hybrid search, reranking, or query rewriting is used.
-- Monitoring, Docker, CI/CD, and public deployment are not implemented.
+- Monitoring, Docker, and CI/CD are not implemented.
 
 ## Future work
 
@@ -255,7 +257,7 @@ This is an evidence-based self-assessment, not the final reviewer score.
 | Hybrid search | 0/1 | Not implemented |
 | Document reranking | 0/1 | Not implemented |
 | Query rewriting | 0/1 | Not implemented |
-| Cloud deployment | 0/2 | Not deployed |
+| Cloud deployment | 2/2 | Deployed on Streamlit Community Cloud |
 
 ## License
 
