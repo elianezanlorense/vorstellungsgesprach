@@ -1,0 +1,84 @@
+[
+  {
+    "id": "q001",
+    "question_en": "What is Imbalanced Data?",
+    "answer_en": "Imbalanced data occurs when one class or category in a dataset is disproportionately represented compared to others. This can manifest in both binary classification problems (e.g., fraud detection where most transactions are legitimate, but a few are fraudulent) and multi-class classification problems (e.g., classifying species in an ecosystem where some species dominate).",
+    "question_de": "Was sind unausgewogene Daten (Imbalanced Data)?",
+    "answer_de": "Bei der Schätzung von Machine Learning Modellen tritt häufig das Problem der Klassen-Imbalance auf. Das bedeutet, dass die Zielvariable (Target) nicht gleich, sondern ungleichmäßig verteilt ist. Meist ist die positive Klasse sehr klein, während die negative Klasse sehr groß ist, angenommen eine binäre Target-Klasse.",
+    "topic": "Imbalanced Data",
+    "tags": [
+      "binäre Target-Klasse",
+      "Überwachtes Lernen"
+    ],
+    "phrases": [
+      "das Problem der Klassen-Imbalance",
+      "die Zielvariable (Target) nicht gleich",
+      "die positive Klasse und Negative ungleichmäßig verteilt ist",
+      "die positive Klasse sehr klein",
+      "die negative Klasse sehr groß",
+      "eine binäre Target-Klasse"
+    ]
+  },
+  {
+    "id": "q002",
+    "question_en": "What is a Confusion Matrix?",
+    "answer_en": "",
+    "question_de": "Was ist eine Konfusionsmatrix?",
+    "answer_de": "Werden Beobachtungen, deren Werte der Zielvariable bekannt sind, durch ein Modell klassifiziert, ergeben sich 4 Zellen einer Kontingenztabelle. Die Beobachtungen, welche als positiv klassifiziert werden und positiv sind, nennt man True Positives (TP). Gleichermaßen gilt: Die Beobachtungen, welche negativ klassifiziert sind und solche sind, werden True Negatives (TN) genannt. Die Beobachtungen, welche als negativ klassifiziert werden, jedoch positiv sind, nennt man False Negatives (FN). Sind die Beobachtungen hingegen als positiv klassifiziert, aber tatsächlich negativ, so nennt man diese False Positives (FP).",
+    "topic": "Konfusionsmatrix",
+    "tags": [
+      "binäre Target-Klasse",
+      "Überwachtes Lernen"
+    ],
+    "phrases": [
+      "4 Zellen einer Kontingenztabelle",
+      "als positiv klassifiziert werden und positiv sind",
+      "True Positives (TP)",
+      "negativ klassifiziert sind und solche sind",
+      "True Negatives (TN)",
+      "als negativ klassifiziert werden, jedoch positiv sind",
+      "False Negatives (FN)",
+      "als positiv klassifiziert, aber tatsächlich negativ",
+      "False Positives (FP)"
+    ]
+  },
+  {
+    "id": "q003",
+    "question_en": "What is Cluster Analysis?",
+    "answer_en": "",
+    "question_de": "Was ist eine Clusteranalyse?",
+    "answer_de": "Die Clusteranalyse zählt im Machine Learning zur Kategorie des Unsupervised Learnings. Ziel ist es, k Cluster zu generieren. Die Cluster sollten untereinander maximal heterogen und innerhalb maximal homogen sein. Clusteranalysen werden beispielsweise häufig verwendet, um Kunden zu segmentieren und somit gezielter ansprechen zu können (Targeting). Die nachfolgenden Darstellungen basieren auf realen Kundendaten und sollen beispielhaft die wichtigsten Konzepte der Clusteranalyse verdeutlichen.",
+    "topic": "Clusteranalyse",
+    "tags": [
+      "Unsupervised Learning",
+      "Clustering",
+      "Kundensegmentierung"
+    ],
+    "phrases": [
+      "Kategorie des Unsupervised Learnings",
+      "k Cluster zu generieren",
+      "untereinander maximal heterogen",
+      "innerhalb maximal homogen",
+      "Kunden zu segmentieren",
+      "gezielter ansprechen zu können (Targeting)"
+    ]
+  },
+  {
+    "id": "q004",
+    "question_en": "When is Cross-Validation recommended?",
+    "answer_en": "",
+    "question_de": "Wann ist Cross-Validation empfehlenswert?",
+    "answer_de": "Vorteile von k-fold-Cross-Validation auf einen Blick: Identifizierung von Overfitting, Testen der Robustheit des Modells, aussagekräftige Modellperformance auf kleinen Datensätzen, aussagekräftige Modellperformance auf Datensätzen mit Balance-Problemen, Einsatz bei Tuning von Modellen.",
+    "topic": "Cross-Validation",
+    "tags": [
+      "Überwachtes Lernen"
+    ],
+    "phrases": [
+      "Identifizierung von Overfitting",
+      "Testen der Robustheit des Modells",
+      "aussagekräftige Modellperformance auf kleinen Datensätzen",
+      "aussagekräftige Modellperformance auf Datensätzen mit Balance-Problemen",
+      "Einsatz bei Tuning von Modellen"
+    ]
+  }
+]
