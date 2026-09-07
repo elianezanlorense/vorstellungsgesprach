@@ -13,6 +13,7 @@ from src.app_service import (
     answer_query,
     build_rag_assistant,
 )
+from src.feedback import init_feedback_db, save_feedback
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -63,6 +64,10 @@ except Exception as error:
     st.stop()
 
 
+# Create the feedback table once per process (safe to call every run).
+init_feedback_db()
+
+
 if "history" not in st.session_state:
     st.session_state.history = []
 
@@ -74,8 +79,10 @@ if "feedback" not in st.session_state:
 def submit_feedback(
     result_id: str,
     query: str,
+    answer: str,
+    concept_id: str | None,
 ) -> None:
-    """Save feedback in the current Streamlit session."""
+    """Save feedback in the current Streamlit session and persist it to disk."""
     rating = st.session_state.get(
         f"rating_{result_id}"
     )
@@ -98,6 +105,18 @@ def submit_feedback(
         "comment": comment,
     }
 
+    # Persist to SQLite so feedback survives across sessions/restarts.
+    try:
+        save_feedback(
+            question=query,
+            answer=answer,
+            concept_id=concept_id,
+            rating=rating,
+            comment=comment,
+        )
+    except Exception as error:
+        st.warning(f"Feedback konnte nicht gespeichert werden: {error}")
+
     st.toast("Danke für dein Feedback!")
 
 
@@ -112,6 +131,7 @@ def render_answer(result: dict) -> None:
 
     result_id = result["result_id"]
     query = result["query"]
+    concept_id = result.get("concept_id") or result.get("id")
 
     if intro:
         st.markdown(intro)
@@ -144,7 +164,7 @@ def render_answer(result: dict) -> None:
             "Absenden",
             key=f"submit_{result_id}",
             on_click=submit_feedback,
-            args=(result_id, query),
+            args=(result_id, query, intro or context, concept_id),
         )
 
 
@@ -187,7 +207,7 @@ if query:
 
     with st.chat_message("assistant"):
         with st.spinner(
-            "Suche nach einemSuche nach einem passenden Konzept..."
+            "Suche nach einem passenden Konzept..."
         ):
             try:
                 result = answer_query(
