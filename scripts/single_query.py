@@ -1,12 +1,7 @@
-"""Sanity check: run one random evaluation query against every available
-Gemini chat model, and save the results to outputs/query_randon.txt.
+"""Run one random evaluation query against all available Gemini models.
 
-Not part of the production pipeline (main.py) — use this to quickly check
-if any candidate model is failing (e.g. a preview model returning a 503)
-before running the full comparison in evaluate_models.py.
-
-Usage (from the project root):
-    python notebooks/sanity_check.py
+Usage from the project root:
+    uv run python scripts/single_query.py
 """
 
 from __future__ import annotations
@@ -22,11 +17,12 @@ from google import genai
 from sentence_transformers import SentenceTransformer
 
 
-NOTEBOOK_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = NOTEBOOK_DIR.parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+
 
 from src.evaluation import evaluation_queries
 from src.load_store_data import load_data
@@ -36,10 +32,15 @@ from src.rag import TechnicalGermanRAG
 
 TOPICS_PATH = "../data/raw/topics.json"
 CHROMA_PATH = "../data/processed/chroma_db"
+OUTPUT_PATH = "../outputs/query_random.txt"
 
 COLLECTION_NAME = "concepts_de"
-EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+EMBEDDING_MODEL = ( "sentence-transformers/" "paraphrase-multilingual-MiniLM-L12-v2"
+)
+
 GENERATION_MODEL = "models/gemini-flash-lite-latest"
+
 
 ANSWER_PROMPT = """
 Du hilfst einer Person dabei, technisches Deutsch zu lernen.
@@ -61,34 +62,52 @@ Antworte ausschließlich mit einem gültigen JSON-Objekt:
 {{"intro": "...", "phrases": ["...", "...", "..."]}}
 """.strip()
 
-client_gemini = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+
 def main() -> None:
-    load_dotenv("../.env")
-    api_key = os.getenv("GEMINI_API_KEY")
+   
+    topics_path = (SCRIPT_DIR / TOPICS_PATH ).resolve()
+
+    chroma_path = (SCRIPT_DIR / CHROMA_PATH ).resolve()
+
+    output_path = (SCRIPT_DIR / OUTPUT_PATH).resolve()
+
+    env_path = (  SCRIPT_DIR / "../.env").resolve()
+
+    load_dotenv(env_path)
+
+    api_key = os.getenv( "GEMINI_API_KEY" )
+
     if not api_key:
-        raise RuntimeError("GEMINI_API_KEY was not found in the environment.")
-
-    if not os.path.isdir(CHROMA_PATH):
         raise RuntimeError(
-            f"ChromaDB directory not found: {CHROMA_PATH}. "
-            "Run 'python main.py pipeline' first."
+            f"GEMINI_API_KEY was not found in {env_path}"
         )
 
-    topics = load_data(TOPICS_PATH)
-
-    chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-    collection = chroma_client.get_collection(name=COLLECTION_NAME)
-
-    if collection.count() == 0:
+    if not topics_path.is_file():
         raise RuntimeError(
-            f"Collection '{COLLECTION_NAME}' is empty. "
-            "Run 'python main.py pipeline' first."
+            f"Topics file not found: {topics_path}"
         )
 
-    gemini_client = genai.Client(api_key=api_key)
-    embedding_model = SentenceTransformer(EMBEDDING_MODEL)
+    if not chroma_path.is_dir():
+        raise RuntimeError(
+            f"ChromaDB directory not found: {chroma_path}"
+        )
+
+    output_path.parent.mkdir( parents=True, exist_ok=True, )
+
+    topics = load_data(topics_path)
+
+    chroma_client = chromadb.PersistentClient(path=str(chroma_path))
+
+    collection = chroma_client.get_collection( name=COLLECTION_NAME )
+
+    if collection.count() == 0: raise RuntimeError(
+            f"Collection '{COLLECTION_NAME}' is empty."
+        )
+
+    gemini_client = genai.Client(
+        api_key=api_key)
+
+    embedding_model = SentenceTransformer( EMBEDDING_MODEL )
 
     rag = TechnicalGermanRAG(
         collection=collection,
@@ -99,27 +118,34 @@ def main() -> None:
         answer_prompt=ANSWER_PROMPT,
     )
 
-    selected_query = random.choice(evaluation_queries)
-    available_models = list_available_chat_models(gemini_client)
+    selected_query = random.choice( evaluation_queries)
 
-    query_randon = rag.compare_models(
-        evaluation_queries=[selected_query],
+    available_models = ( list_available_chat_models( gemini_client))
+
+    query_random = rag.compare_models(
+        evaluation_queries=[ selected_query ],
         candidate_models=available_models,
     )
 
-    with open("../outputs/query_randon.txt", "w", encoding="utf-8") as f:
-        for i, result in enumerate(query_randon, start=1):
-            f.write(f"\n[{i}/{len(query_randon)}] Modell: {result['model']}\n")
-            f.write(f"Frage: {result['query']}\n")
-            f.write(f"Thema erkannt: {result['topic']}\n")
-            f.write(f"Intro: {result['intro']}\n")
-            f.write("Phrasen:\n")
-            for phrase in result["phrases"]:
-                f.write(f"  • {phrase}\n")
-            f.write("-" * 80 + "\n")
+    with output_path.open("w", encoding="utf-8") as file:
+        for index, result in enumerate(query_random, start=1):
+            file.write(f"\n[{index}/{len(query_random)}] Modell: {result['model']}\n")
+            file.write(f"Frage: {result['query']}\n")
+            file.write(f"Thema erkannt: {result['topic']}\n")
+            file.write(f"Intro: {result['intro']}\n")
+            file.write("Phrasen:\n")
+
+        for phrase in result["phrases"]:
+            file.write(f"  • {phrase}\n")
+
+        file.write("-" * 80 + "\n")
+  
 
     print(f"Selected query: {selected_query['query']}")
-    print("Results saved to: ../outputs/query_randon.txt")
+
+    print( f"Expected ID: "  f"{selected_query['expected_id']}"  )
+
+    print( f"Results saved to: {output_path}" )
 
 
 if __name__ == "__main__":
