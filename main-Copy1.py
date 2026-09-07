@@ -23,7 +23,7 @@ OUTPUT_DIR = '../outputs'
 
 from build_documents import build_documents
 from evaluation import evaluate_retrieval,evaluation_queries,hit_rate,mean_reciprocal_rank,compare_models_all_queries
-from load_data import load_data
+from load_store_data import load_data
 from models import list_available_chat_models
 from rag import TechnicalGermanRAG
 
