@@ -26,6 +26,7 @@ from src.evaluation import evaluation_queries
 from src.load_store_data import load_data
 from src.models import list_available_chat_models
 from src.rag import TechnicalGermanRAG
+from src.prompts import ANSWER_PROMPT
 
 
 TOPICS_PATH = "../data/raw/topics.json"
@@ -38,27 +39,6 @@ EMBEDDING_MODEL = (
     "paraphrase-multilingual-MiniLM-L12-v2"
 )
 GENERATION_MODEL = "models/gemini-flash-lite-latest"
-
-ANSWER_PROMPT = """
-Du hilfst einer Person dabei, technisches Deutsch zu lernen.
-
-Basierend auf dem folgenden Konzept, beantworte die Nutzerfrage NICHT mit
-einem langen Fließtext. Gib stattdessen zurück:
-1. Eine sehr kurze Einleitung (maximal ein Satz)
-2. Die wichtigsten Ausdrücke aus dem Konzept, die man sich merken sollte
-
-Nutzerfrage: {query}
-
-Konzept:
-Thema: {topic}
-Frage: {question_de}
-Antwort: {answer_de}
-Wichtige Ausdrücke: {phrases}
-
-Antworte ausschließlich mit einem gültigen JSON-Objekt:
-{{"intro": "...", "phrases": ["...", "...", "..."]}}
-""".strip()
-
 
 def main() -> None:
     topics_path = (SCRIPT_DIR / TOPICS_PATH).resolve()
