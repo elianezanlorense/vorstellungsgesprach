@@ -1,0 +1,353 @@
+[
+  {
+    "id": "q001",
+    "question_de": "Was sind unausgewogene Daten (Imbalanced Data)?",
+    "answer_de": "Bei der Schätzung von Machine-Learning-Modellen tritt häufig das Problem der Klassen-Imbalance auf. Das bedeutet, dass die Zielvariable nicht gleichmäßig verteilt ist. Meist ist die positive Klasse sehr klein, während die negative Klasse sehr groß ist, angenommen eine binäre Zielklasse.",
+    "topic": "Imbalanced Data",
+    "tags": [
+      "binäre Klassifikation",
+      "überwachtes Lernen",
+      "Klassen-Imbalance"
+    ],
+    "phrases": [
+      "das Problem der Klassen-Imbalance",
+      "die Zielvariable nicht gleichmäßig verteilt",
+      "die positive und negative Klasse ungleichmäßig verteilt",
+      "die positive Klasse sehr klein",
+      "die negative Klasse sehr groß",
+      "eine binäre Zielklasse"
+    ]
+  },
+  {
+    "id": "q002",
+    "question_de": "Was ist eine Konfusionsmatrix?",
+    "answer_de": "Werden Beobachtungen, deren Werte der Zielvariable bekannt sind, durch ein Modell klassifiziert, ergeben sich vier Zellen einer Kontingenztabelle. Die Beobachtungen, die als positiv klassifiziert werden und tatsächlich positiv sind, nennt man True Positives. Beobachtungen, die als negativ klassifiziert werden und tatsächlich negativ sind, nennt man True Negatives. Beobachtungen, die als negativ klassifiziert werden, jedoch positiv sind, nennt man False Negatives. Beobachtungen, die als positiv klassifiziert werden, aber tatsächlich negativ sind, nennt man False Positives.",
+    "topic": "Konfusionsmatrix",
+    "tags": [
+      "binäre Klassifikation",
+      "überwachtes Lernen",
+      "Modellevaluation"
+    ],
+    "phrases": [
+      "vier Zellen einer Kontingenztabelle",
+      "als positiv klassifiziert und tatsächlich positiv",
+      "True Positives (TP)",
+      "als negativ klassifiziert und tatsächlich negativ",
+      "True Negatives (TN)",
+      "als negativ klassifiziert, jedoch tatsächlich positiv",
+      "False Negatives (FN)",
+      "als positiv klassifiziert, aber tatsächlich negativ",
+      "False Positives (FP)"
+    ]
+  },
+  {
+    "id": "q003",
+    "question_de": "Was ist eine Clusteranalyse?",
+    "answer_de": "Die Clusteranalyse zählt im Machine Learning zur Kategorie des Unsupervised Learnings. Ziel ist es, mehrere Cluster zu generieren. Die Cluster sollten untereinander maximal heterogen und innerhalb eines Clusters maximal homogen sein. Clusteranalysen werden beispielsweise verwendet, um Kunden zu segmentieren und gezielter ansprechen zu können.",
+    "topic": "Clusteranalyse",
+    "tags": [
+      "Unsupervised Learning",
+      "Clustering",
+      "Kundensegmentierung"
+    ],
+    "phrases": [
+      "Kategorie des Unsupervised Learnings",
+      "Cluster zu generieren",
+      "untereinander maximal heterogen",
+      "innerhalb maximal homogen",
+      "Kunden zu segmentieren",
+      "gezielter ansprechen zu können"
+    ]
+  },
+  {
+    "id": "q004",
+    "question_de": "Wann ist Cross-Validation empfehlenswert?",
+    "answer_de": "Zu den Vorteilen der k-fold-Cross-Validation gehören die Identifizierung von Overfitting, das Testen der Robustheit eines Modells, eine aussagekräftige Modellbewertung auf kleinen Datensätzen und auf Datensätzen mit Balance-Problemen sowie der Einsatz beim Tuning von Modellen. Dabei wird der Datensatz mehrfach in Trainings- und Validierungsteile aufgeteilt.",
+    "topic": "Cross-Validation",
+    "tags": [
+      "überwachtes Lernen",
+      "Modellevaluation",
+      "Overfitting"
+    ],
+    "phrases": [
+      "Identifizierung von Overfitting",
+      "Testen der Robustheit des Modells",
+      "aussagekräftige Modellperformance auf kleinen Datensätzen",
+      "aussagekräftige Modellperformance auf Datensätzen mit Balance-Problemen",
+      "Einsatz beim Tuning von Modellen"
+    ]
+  },
+  {
+    "id": "q005",
+    "question_de": "Was ist eine Hazard Ratio?",
+    "answer_de": "Die Hazard Ratio wird in einer Time-to-Event-Analyse verwendet und beschreibt das Verhältnis der Hazards zweier Gruppen über die Zeit. Sie kann als Hazard der Behandlungsgruppe geteilt durch den Hazard der Kontrollgruppe berechnet werden. Ein Wert kleiner als eins bedeutet, dass die Behandlungsgruppe zu einem bestimmten Zeitpunkt eine niedrigere Ereignisrate als die Kontrollgruppe hat. Die Hazard Ratio ist nicht dasselbe wie das relative Risiko, weil sie auch den Zeitpunkt des Ereignisses berücksichtigt.",
+    "topic": "Hazard Ratio",
+    "tags": [
+      "Time-to-Event-Analyse",
+      "Überlebenszeitanalyse",
+      "Behandlungsgruppe",
+      "Kontrollgruppe"
+    ],
+    "phrases": [
+      "Verhältnis der Hazards",
+      "Hazard der Behandlungsgruppe",
+      "Hazard der Kontrollgruppe",
+      "Ereignisrate über die Zeit",
+      "ein Wert kleiner als eins",
+      "den Zeitpunkt des Ereignisses berücksichtigen"
+    ]
+  },
+  {
+    "id": "q006",
+    "question_de": "Was ist das relative Risiko?",
+    "answer_de": "Das relative Risiko vergleicht die Risiken eines Ereignisses in zwei Gruppen zu einem bestimmten Zeitpunkt. Es wird berechnet, indem das Risiko in der Behandlungsgruppe durch das Risiko in der Kontrollgruppe geteilt wird. Wenn beispielsweise 69 von 100 Personen in der Behandlungsgruppe und 90 von 100 Personen in der Kontrollgruppe ein Ereignis haben, beträgt das relative Risiko 0,69 geteilt durch 0,90 und damit ungefähr 0,77. Das entspricht einer relativen Risikoreduktion von ungefähr 23 Prozent.",
+    "topic": "Relatives Risiko",
+    "tags": [
+      "Risikovergleich",
+      "Behandlungsgruppe",
+      "Kontrollgruppe",
+      "Effektmaß"
+    ],
+    "phrases": [
+      "Risiken zwischen zwei Gruppen vergleichen",
+      "Risiko der Behandlungsgruppe",
+      "Risiko der Kontrollgruppe",
+      "relatives Risiko von 0,77",
+      "relative Risikoreduktion von 23 Prozent"
+    ]
+  },
+  {
+    "id": "q007",
+    "question_de": "Was ist eine Odds Ratio?",
+    "answer_de": "Die Odds Ratio vergleicht die Chancen eines Ereignisses zwischen zwei Gruppen. Die Chance innerhalb einer Gruppe wird als Anzahl der Personen mit Ereignis geteilt durch die Anzahl der Personen ohne Ereignis berechnet. Anschließend werden die Chancen beider Gruppen geteilt. Bei häufigen Ereignissen können sich Odds Ratio und relatives Risiko deutlich unterscheiden. Bei seltenen Ereignissen sind beide Maße häufig ähnlich.",
+    "topic": "Odds Ratio",
+    "tags": [
+      "Chancenverhältnis",
+      "Effektmaß",
+      "Ereignis",
+      "Gruppenvergleich"
+    ],
+    "phrases": [
+      "Chancen eines Ereignisses",
+      "Personen mit Ereignis",
+      "Personen ohne Ereignis",
+      "Chancen zwischen zwei Gruppen vergleichen",
+      "Odds Ratio und relatives Risiko",
+      "bei seltenen Ereignissen ähnlich"
+    ]
+  },
+  {
+    "id": "q008",
+    "question_de": "Was ist eine Time-to-Event-Analyse?",
+    "answer_de": "Eine Time-to-Event-Analyse untersucht sowohl, ob ein bestimmtes Ereignis eintritt, als auch wann es eintritt. Personen, bei denen das Ereignis während des Beobachtungszeitraums nicht festgestellt wird, werden zensiert. Mit dem Log-Rank-Test können Überlebensverteilungen mehrerer Gruppen verglichen werden. Dabei wird geprüft, ob die Verteilungen identisch sind oder sich statistisch unterscheiden.",
+    "topic": "Time-to-Event-Analyse",
+    "tags": [
+      "Überlebenszeitanalyse",
+      "Zensierung",
+      "Log-Rank-Test",
+      "Ereigniszeit"
+    ],
+    "phrases": [
+      "ob und wann ein Ereignis eintritt",
+      "während des Beobachtungszeitraums",
+      "zensierte Beobachtungen",
+      "Überlebensverteilungen vergleichen",
+      "Log-Rank-Test",
+      "identische oder unterschiedliche Verteilungen"
+    ]
+  },
+  {
+    "id": "q009",
+    "question_de": "Was ist Feature Engineering?",
+    "answer_de": "Feature Engineering ist ein Teilprozess des Data Minings. Es besteht hauptsächlich aus Feature Selection und Feature Extraction. Bei der Feature Selection werden vorhandene Merkmale nach ihrer Relevanz oder Diskriminierungsfähigkeit bewertet und ausgewählt. Bei der Feature Extraction werden neue und möglicherweise aussagekräftigere Merkmale aus den vorhandenen Daten erzeugt.",
+    "topic": "Feature Engineering",
+    "tags": [
+      "Data Mining",
+      "Feature Selection",
+      "Feature Extraction",
+      "Merkmale"
+    ],
+    "phrases": [
+      "Teilprozess des Data Minings",
+      "Feature Selection",
+      "Feature Extraction",
+      "Merkmale nach ihrer Relevanz bewerten",
+      "Diskriminierungsfähigkeit",
+      "neue Merkmale erzeugen"
+    ]
+  },
+  {
+    "id": "q010",
+    "question_de": "Was ist die Pearson-Korrelation?",
+    "answer_de": "Die Pearson-Korrelation bewertet den linearen Zusammenhang zwischen zwei kontinuierlichen Variablen. Ein Zusammenhang ist linear, wenn eine Veränderung einer Variablen mit einer proportionalen Veränderung der anderen Variablen verbunden ist. Der Pearson-Korrelationskoeffizient liegt zwischen minus eins und plus eins und beschreibt die Stärke und Richtung des linearen Zusammenhangs.",
+    "topic": "Pearson-Korrelation",
+    "tags": [
+      "Korrelation",
+      "parametrisches Verfahren",
+      "kontinuierliche Variablen",
+      "linearer Zusammenhang"
+    ],
+    "phrases": [
+      "linearer Zusammenhang",
+      "zwei kontinuierliche Variablen",
+      "proportionale Veränderung",
+      "zwischen minus eins und plus eins",
+      "Stärke und Richtung des Zusammenhangs"
+    ]
+  },
+  {
+    "id": "q011",
+    "question_de": "Was ist die Spearman-Korrelation?",
+    "answer_de": "Die Spearman-Korrelation ist ein nichtparametrisches Korrelationsmaß. Sie bewertet den monotonen Zusammenhang zwischen zwei kontinuierlichen oder ordinalen Variablen. Bei einem monotonen Zusammenhang verändern sich die Variablen tendenziell gemeinsam, jedoch nicht notwendigerweise mit einer konstanten Rate. Die Berechnung basiert auf den Rangwerten der Beobachtungen.",
+    "topic": "Spearman-Korrelation",
+    "tags": [
+      "Korrelation",
+      "nichtparametrisches Verfahren",
+      "Rangwerte",
+      "monotoner Zusammenhang"
+    ],
+    "phrases": [
+      "nichtparametrisches Korrelationsmaß",
+      "monotoner Zusammenhang",
+      "kontinuierliche oder ordinale Variablen",
+      "nicht mit einer konstanten Rate",
+      "auf Rangwerten basieren"
+    ]
+  },
+  {
+    "id": "q012",
+    "question_de": "Was ist der MinMaxScaler?",
+    "answer_de": "Der MinMaxScaler skaliert die Werte eines Merkmals normalerweise auf einen Bereich zwischen null und eins. Dafür wird vom ursprünglichen Wert das Minimum des Merkmals abgezogen und das Ergebnis durch die Spannweite zwischen Maximum und Minimum geteilt. Der MinMaxScaler bewahrt die Form der ursprünglichen Verteilung, wird aber stark durch Ausreißer beeinflusst.",
+    "topic": "MinMaxScaler",
+    "tags": [
+      "Feature Scaling",
+      "Normalisierung",
+      "Preprocessing",
+      "Ausreißer"
+    ],
+    "phrases": [
+      "auf einen Bereich zwischen null und eins skalieren",
+      "das Minimum abziehen",
+      "durch die Spannweite teilen",
+      "die Form der Verteilung bewahren",
+      "durch Ausreißer beeinflusst"
+    ]
+  },
+  {
+    "id": "q013",
+    "question_de": "Was ist der StandardScaler?",
+    "answer_de": "Der StandardScaler standardisiert ein Merkmal, indem er von jedem Wert den Mittelwert abzieht und das Ergebnis durch die Standardabweichung teilt. Dadurch erhält das transformierte Merkmal einen Mittelwert von null und eine Varianz von eins. Da Mittelwert und Standardabweichung durch extreme Werte beeinflusst werden, ist der StandardScaler empfindlich gegenüber Ausreißern.",
+    "topic": "StandardScaler",
+    "tags": [
+      "Feature Scaling",
+      "Standardisierung",
+      "Preprocessing",
+      "Ausreißer"
+    ],
+    "phrases": [
+      "den Mittelwert abziehen",
+      "durch die Standardabweichung teilen",
+      "Mittelwert von null",
+      "Varianz von eins",
+      "empfindlich gegenüber Ausreißern"
+    ]
+  },
+  {
+    "id": "q014",
+    "question_de": "Was ist der RobustScaler?",
+    "answer_de": "Der RobustScaler skaliert Daten mithilfe des Medians und des Interquartilsabstands. Er ist eine Alternative zum StandardScaler, wenn Ausreißer vorhanden sind, weil extreme Werte den Median und den Interquartilsabstand weniger stark beeinflussen als den Mittelwert und die Standardabweichung. Er eignet sich deshalb, wenn Ausreißer nicht entfernt werden können oder sollen.",
+    "topic": "RobustScaler",
+    "tags": [
+      "Feature Scaling",
+      "Median",
+      "Interquartilsabstand",
+      "Ausreißer"
+    ],
+    "phrases": [
+      "Median und Interquartilsabstand",
+      "Alternative zum StandardScaler",
+      "in Anwesenheit von Ausreißern",
+      "weniger stark durch Ausreißer beeinflusst",
+      "Ausreißer nicht entfernen"
+    ]
+  },
+  {
+    "id": "q015",
+    "question_de": "Wie wählt ein Entscheidungsbaum eine Aufteilung aus?",
+    "answer_de": "Ein Entscheidungsbaum wählt seine Aufteilungen mithilfe eines Unreinheitsmaßes aus. Dieses Maß beschreibt die Homogenität der Zielwerte in einem Knoten. Beim Gini-Kriterium wird eine Aufteilung mit möglichst geringer Unreinheit gesucht. Beim Entropie-Kriterium wird die Aufteilung mit dem größten Informationsgewinn gewählt. In vielen Fällen unterscheiden sich die resultierenden Modelle nur wenig, wobei die Berechnung der Entropie wegen der Logarithmusfunktion etwas langsamer sein kann.",
+    "topic": "Entscheidungsbaum und Unreinheitsmaße",
+    "tags": [
+      "Entscheidungsbaum",
+      "Gini-Index",
+      "Entropie",
+      "Informationsgewinn"
+    ],
+    "phrases": [
+      "Unreinheit eines Knotens",
+      "Homogenität der Zielwerte",
+      "Gini-Kriterium",
+      "geringste Unreinheit",
+      "Entropie-Kriterium",
+      "größter Informationsgewinn"
+    ]
+  },
+  {
+    "id": "q016",
+    "question_de": "Wie kann der KNN-Imputer fehlende Werte ergänzen?",
+    "answer_de": "Der KNN-Imputer kann fehlende Werte mithilfe der k nächsten Nachbarn ergänzen. Dazu werden ähnliche Beobachtungen im Trainingsdatensatz gesucht. Zwei Beobachtungen gelten als ähnlich, wenn ihre gemeinsam vorhandenen Merkmale ähnliche Werte besitzen. Der fehlende Wert wird typischerweise aus dem Mittelwert der entsprechenden Werte der nächsten Nachbarn berechnet.",
+    "topic": "KNN-Imputer",
+    "tags": [
+      "Missing Values",
+      "Imputation",
+      "k-Nearest Neighbors",
+      "Preprocessing"
+    ],
+    "phrases": [
+      "fehlende Werte ergänzen",
+      "k nächste Nachbarn",
+      "ähnliche Beobachtungen",
+      "gemeinsam vorhandene Merkmale",
+      "Mittelwert der nächsten Nachbarn"
+    ]
+  },
+  {
+    "id": "q017",
+    "question_de": "Was ist der R²-Score?",
+    "answer_de": "Der R²-Score, auch Bestimmtheitsmaß genannt, ist eine Bewertungsmetrik für Regressionsmodelle. Er vergleicht die tatsächlichen Zielwerte mit den vom Modell geschätzten Zielwerten. Der bestmögliche Wert ist eins. Der R²-Score kann auch negativ sein, wenn das Modell schlechter als ein einfaches Referenzmodell auf Basis des Mittelwerts ist.",
+    "topic": "R²-Score",
+    "tags": [
+      "Regression",
+      "Modellevaluation",
+      "Bestimmtheitsmaß",
+      "Metrik"
+    ],
+    "phrases": [
+      "Bestimmtheitsmaß",
+      "Bewertungsmetrik für Regression",
+      "tatsächliche Zielwerte",
+      "geschätzte Zielwerte",
+      "bestmöglicher Wert ist eins",
+      "kann negativ sein"
+    ]
+  },
+  {
+    "id": "q018",
+    "question_de": "Was ist der F1-Score?",
+    "answer_de": "Der F1-Score ist eine Bewertungsmetrik für Klassifikationsmodelle und wird auch als balanced F-score oder F-measure bezeichnet. Er ist das harmonische Mittel aus Precision und Recall. Dadurch berücksichtigt er sowohl False Positives als auch False Negatives. Der beste mögliche Wert ist eins und der schlechteste Wert ist null. Ein hoher F1-Score setzt sowohl eine hohe Precision als auch einen hohen Recall voraus.",
+    "topic": "F1-Score",
+    "tags": [
+      "Klassifikation",
+      "Modellevaluation",
+      "Precision",
+      "Recall"
+    ],
+    "phrases": [
+      "balanced F-score",
+      "harmonisches Mittel",
+      "Precision und Recall",
+      "False Positives und False Negatives",
+      "bester Wert ist eins",
+      "schlechtester Wert ist null"
+    ]
+  }
+]
