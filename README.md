@@ -147,6 +147,24 @@ uv run streamlit run app.py
 
 No separate database server is required.
 
+## Run with Docker
+
+The application can also be built and run in a container, without installing Python or `uv` locally.
+
+```bash
+docker compose up --build
+```
+
+The image installs dependencies with `uv`, builds the ChromaDB knowledge base during the build step, and starts the Streamlit app. Once it's running, open:
+
+```
+http://localhost:8501
+```
+
+If port `8501` is already in use on your machine, change the host port in `docker-compose.yml` (for example `"8502:8501"`).
+
+A `GEMINI_API_KEY` must be available in a `.env` file in the project root; `docker-compose.yml` loads it automatically via `env_file`.
+
 ## Configuration
 
 | Setting | Current value |
@@ -218,7 +236,15 @@ The Gemini quota has been reached. Wait for it to reset, reduce the models or qu
 
 The labeled retrieval and LLM evaluation scripts test application quality. A conventional automated unit-test suite is not currently documented.
 
-Persistent feedback, operational metrics, and a monitoring dashboard are not implemented. The application is currently intended for local demonstration, alongside the public Streamlit deployment.
+### User feedback
+
+Each answer in the Streamlit interface includes a feedback control (👍/👎 plus an optional comment). Feedback is persisted to a local SQLite database (`data/feedback.db`) via `src/feedback.py`, so it survives across sessions and container restarts (when the `data/` volume is mounted).
+
+This feedback is intended for manual review: periodically inspecting `feedback.db` can surface concepts with confusing or incomplete reference answers, informing updates to `data/raw/topics.json` or to the generation prompt.
+
+Note that on Streamlit Community Cloud the filesystem is ephemeral, so feedback collected there does not persist across redeploys. A future improvement is to move this table to an external database (for example Supabase or Turso) for durable storage in production.
+
+A dedicated operational metrics dashboard is not implemented.
 
 ## Limitations
 
@@ -227,7 +253,7 @@ Persistent feedback, operational metrics, and a monitoring dashboard are not imp
 - The full LLM evaluation is blocked by free-tier quotas.
 - Out-of-scope questions may retrieve an unrelated nearest concept.
 - No confidence threshold, hybrid search, reranking, or query rewriting is used.
-- Monitoring, Docker, and CI/CD are not implemented.
+- Feedback is stored locally and does not persist across Streamlit Cloud redeploys; a full monitoring dashboard and CI/CD are not implemented.
 
 ## Future work
 
@@ -251,8 +277,8 @@ This is an evidence-based self-assessment, not the final reviewer score.
 | LLM evaluation | 1/2 | Multiple models supported; full run quota-limited |
 | Interface | 2/2 | Streamlit interface |
 | Ingestion pipeline | 1/2 | Python ingestion pipeline |
-| Monitoring | 0/2 | Not implemented |
-| Containerization | 0/2 | Not implemented |
+| Monitoring | 1/2 | User feedback (rating + comment) collected and persisted for manual review |
+| Containerization | 2/2 | Dockerfile and docker-compose provided |
 | Reproducibility | 2/2 | Dataset, lock file, configuration, and commands provided |
 | Hybrid search | 0/1 | Not implemented |
 | Document reranking | 0/1 | Not implemented |
@@ -261,4 +287,4 @@ This is an evidence-based self-assessment, not the final reviewer score.
 
 ## License
 
-No license has been selected yet. Add one before allowing third parties to reuse or redistribute the project.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
