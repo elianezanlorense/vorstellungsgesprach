@@ -22,7 +22,7 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation import evaluation_queries
+from src.evaluation_queries import evaluation_queries
 from src.load_store_data import load_data
 from src.models import list_available_chat_models
 from src.rag import TechnicalGermanRAG
