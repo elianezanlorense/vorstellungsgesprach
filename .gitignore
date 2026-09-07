@@ -9,3 +9,6 @@ ml_questions.md
 *.txt
 app2.py
 main-Copy.py
+.ipynb_checkpointsapp2.py
+main-Copy.py
+.ipynb_checkpoints/
